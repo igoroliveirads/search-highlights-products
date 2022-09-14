@@ -12,4 +12,6 @@
     <color name="yellow_status_meli">#F5D218</color>
     <color name="grey_meli">#999B9C</color>
     <color name="blue_meli">#3483FA</color>
+    <color name="green_meli">#00A650</color>
+    <color name="light_grey_meli">#B0E5E5E5</color>
 </resources>
