@@ -19,7 +19,7 @@
             android:name=".ItemDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ProductListActivity"
+            android:name=".ItemListActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
