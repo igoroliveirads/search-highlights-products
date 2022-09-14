@@ -16,17 +16,3 @@ class CategoryPredictorEntity {
     @SerializedName("category_name")
     var category_name: String = ""
 }
-
-/*
-
-https://api.mercadolibre.com/sites/MLB/domain_discovery/search?limit=1&q=carro
-
-[
-{
-    "domain_id": "MLB-SCALEXTRIC_CARS",
-    "domain_name": "Carros de autorama",
-    "category_id": "MLB9190",
-    "category_name": "Carros",
-    "attributes": []
-}
-]*/
