@@ -14,7 +14,8 @@ class ItemListActivity : AppCompatActivity() {
 
         getCategory()
         getHighlights()
-        getItems()
+        val list = listOf("MLB2712456503")
+        getItems(list)
     }
 
     private fun getCategory(categoryQuery: String = "carro") {
@@ -51,6 +52,8 @@ class ItemListActivity : AppCompatActivity() {
                 val highlights = response.body()
                 // TODO: "TRATAR EM CASO DE ERRO DE SERVIDOR"
                 if (highlights != null){
+                    val itemIds = highlights.content.filter{ it.type == "ITEM" }.map{ it.id }
+//                    getItems(itemIds)
                     Log.d("HIGHLIGHT", "Highlight ID: ${highlights.content[0].id}")
                 } else {
                     // TODO("Not yet implemented")
@@ -63,21 +66,16 @@ class ItemListActivity : AppCompatActivity() {
         })
     }
 
-    private fun getItems(itemIds: String = "MLB2223703098") {
+    private fun getItems(itemIds: List<String>) {
         val service = RetrofitClient.createRetrofitService()
+        val itemIds = itemIds.joinToString(",")
         val call: Call<List<ItemEntity>> = service.itemsList(itemIds)
         call.enqueue(object : Callback<List<ItemEntity>>{
             override fun onResponse(
                 call: Call<List<ItemEntity>>,
                 response: Response<List<ItemEntity>>
             ) {
-                val items = response.body()
-                // TODO: "TRATAR EM CASO DE ERRO DE SERVIDOR"
-                if (items != null){
-                    Log.d("ITEM", "Item title: ${items[0].title}")
-                } else {
-                    // TODO("Not yet implemented")
-                }
+                val items: List<ItemEntity>? = response.body() // TRATAR NULO
             }
 
             override fun onFailure(call: Call<List<ItemEntity>>, t: Throwable) {
