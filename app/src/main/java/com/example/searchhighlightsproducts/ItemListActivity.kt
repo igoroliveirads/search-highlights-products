@@ -19,7 +19,12 @@ class ItemListActivity : AppCompatActivity() {
         binding = ActivityItemListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        getCategory("carro")
+        val teste = getCategory("carro") {
+            when (it) {
+                is Result.Error -> it.error
+                is Result.Success -> it.result
+            }
+        }
         initRecyclerItems()
     }
 
@@ -34,7 +39,7 @@ class ItemListActivity : AppCompatActivity() {
         }
     }
 
-    private fun getCategory(search: String) {
+    private fun getCategory(search: String, onResult: (Result<List<ItemEntity>>) -> Unit) {
         val service = RetrofitClient.createRetrofitService()
         val call: Call<List<CategoryPredictorEntity>> = service.categoriesList(search)
         call.enqueue(object : Callback<List<CategoryPredictorEntity>> {
@@ -45,21 +50,22 @@ class ItemListActivity : AppCompatActivity() {
                 val categories = response.body()
                 // TODO: "TRATAR EM CASO DE ERRO DE SERVIDOR"
                 if (categories != null) {
-                    getHighlights(categories[0].category_id)
+                    getHighlights(categories[0].category_id, onResult)
                 } else {
                     // TODO("Not yet implemented")
                 }
             }
 
             override fun onFailure(call: Call<List<CategoryPredictorEntity>>, t: Throwable) {
-                // TODO("Not yet implemented")
+                onResult(Result.Error(t))
             }
         })
     }
 
-    private fun getHighlights(categoryId: String) {
+    private fun getHighlights(categoryId: String, onResult: (Result<List<ItemEntity>>) -> Unit) {
         val service = RetrofitClient.createRetrofitService()
         val call: Call<HighlightsItemEntity> = service.highlightsItems(categoryId)
+
         call.enqueue(object : Callback<HighlightsItemEntity> {
             override fun onResponse(
                 call: Call<HighlightsItemEntity>,
@@ -69,19 +75,19 @@ class ItemListActivity : AppCompatActivity() {
                 // TODO: "TRATAR EM CASO DE ERRO DE SERVIDOR"
                 if (highlights != null) {
                     val itemIds = highlights.content.filter { it.type == "ITEM" }.map { it.id }
-                    getItems(itemIds)
+                    getItems(itemIds, onResult)
                 } else {
                     // TODO("Not yet implemented")
                 }
             }
 
             override fun onFailure(call: Call<HighlightsItemEntity>, t: Throwable) {
-                // TODO("Not yet implemented")
+                onResult(Result.Error(t))
             }
         })
     }
 
-    private fun getItems(itemIds: List<String>) {
+    private fun getItems(itemIds: List<String>, onResult: (Result<List<ItemEntity>>) -> Unit) {
         val service = RetrofitClient.createRetrofitService()
         val itemIds = itemIds.joinToString(",")
         val call: Call<List<ItemEntity>> = service.itemsList(itemIds)
@@ -90,11 +96,12 @@ class ItemListActivity : AppCompatActivity() {
                 call: Call<List<ItemEntity>>,
                 response: Response<List<ItemEntity>>
             ) {
-                val items: List<ItemEntity>? = response.body() // TRATAR NULO
+                val items: List<ItemEntity> = response.body() ?: emptyList()
+                onResult(Result.Success(items))
             }
 
             override fun onFailure(call: Call<List<ItemEntity>>, t: Throwable) {
-                // TODO("Not yet implemented")
+                onResult(Result.Error(t))
             }
         })
     }
