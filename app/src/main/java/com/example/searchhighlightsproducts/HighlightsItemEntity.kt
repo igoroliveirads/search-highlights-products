@@ -6,6 +6,7 @@ class HighlightsItemEntity {
 
     @SerializedName("content")
     lateinit var content: List<HighlightsItemContent>
+
 }
 
 class HighlightsItemContent {
@@ -18,4 +19,5 @@ class HighlightsItemContent {
 
     @SerializedName("type")
     var type: String = ""
+
 }

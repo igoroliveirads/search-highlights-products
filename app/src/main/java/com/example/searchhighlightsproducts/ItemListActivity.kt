@@ -12,15 +12,12 @@ class ItemListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_list)
 
-        getCategory()
-        getHighlights()
-        val list = listOf("MLB2712456503")
-        getItems(list)
+        getCategory("carro")
     }
 
-    private fun getCategory(categoryQuery: String = "carro") {
+    private fun getCategory(search: String) {
         val service = RetrofitClient.createRetrofitService()
-        val call: Call<List<CategoryPredictorEntity>> = service.categoriesList(categoryQuery)
+        val call: Call<List<CategoryPredictorEntity>> = service.categoriesList(search)
         call.enqueue(object : Callback<List<CategoryPredictorEntity>> {
             override fun onResponse(
                 call: Call<List<CategoryPredictorEntity>>,
@@ -29,7 +26,7 @@ class ItemListActivity : AppCompatActivity() {
                 val categories = response.body()
                 // TODO: "TRATAR EM CASO DE ERRO DE SERVIDOR"
                 if (categories != null) {
-                    Log.d("CATEGORY", "Category ID: ${categories[0].category_id}")
+                    getHighlights(categories[0].category_id)
                 } else {
                     // TODO("Not yet implemented")
                 }
@@ -41,7 +38,7 @@ class ItemListActivity : AppCompatActivity() {
         })
     }
 
-    private fun getHighlights(categoryId: String = "MLB9190") {
+    private fun getHighlights(categoryId: String) {
         val service = RetrofitClient.createRetrofitService()
         val call: Call<HighlightsItemEntity> = service.highlightsItems(categoryId)
         call.enqueue(object : Callback<HighlightsItemEntity> {
@@ -51,10 +48,9 @@ class ItemListActivity : AppCompatActivity() {
             ) {
                 val highlights = response.body()
                 // TODO: "TRATAR EM CASO DE ERRO DE SERVIDOR"
-                if (highlights != null){
-                    val itemIds = highlights.content.filter{ it.type == "ITEM" }.map{ it.id }
-//                    getItems(itemIds)
-                    Log.d("HIGHLIGHT", "Highlight ID: ${highlights.content[0].id}")
+                if (highlights != null) {
+                    val itemIds = highlights.content.filter { it.type == "ITEM" }.map { it.id }
+                    getItems(itemIds)
                 } else {
                     // TODO("Not yet implemented")
                 }
@@ -70,7 +66,7 @@ class ItemListActivity : AppCompatActivity() {
         val service = RetrofitClient.createRetrofitService()
         val itemIds = itemIds.joinToString(",")
         val call: Call<List<ItemEntity>> = service.itemsList(itemIds)
-        call.enqueue(object : Callback<List<ItemEntity>>{
+        call.enqueue(object : Callback<List<ItemEntity>> {
             override fun onResponse(
                 call: Call<List<ItemEntity>>,
                 response: Response<List<ItemEntity>>

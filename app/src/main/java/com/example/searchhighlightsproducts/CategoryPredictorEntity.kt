@@ -15,4 +15,5 @@ class CategoryPredictorEntity {
 
     @SerializedName("category_name")
     var category_name: String = ""
+
 }

@@ -26,6 +26,5 @@ class RetrofitClient {
         fun createRetrofitService(): RetrofitService {
             return getRetrofitInstance().create(RetrofitService::class.java)
         }
-
     }
 }
