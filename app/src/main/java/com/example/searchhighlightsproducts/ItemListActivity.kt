@@ -1,18 +1,37 @@
 package com.example.searchhighlightsproducts
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.searchhighlightsproducts.databinding.ActivityItemListBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ItemListActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityItemListBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_item_list)
+
+        binding = ActivityItemListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         getCategory("carro")
+        initRecyclerItems()
+    }
+
+    private fun initRecyclerItems() {
+        binding.recyclerViewItem.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewItem.setHasFixedSize(true)
+        binding.recyclerViewItem.adapter = ItemAdapter(ItemList.getItemList()) { item ->
+            val intent = Intent(this, ItemDetailsActivity::class.java)
+            intent.putExtra(Constants.KEY.ITEM_KEY, item.name)
+            intent.putExtra(Constants.KEY.ITEM_KEY, item.price)
+            startActivity(intent)
+        }
     }
 
     private fun getCategory(search: String) {
@@ -77,7 +96,6 @@ class ItemListActivity : AppCompatActivity() {
             override fun onFailure(call: Call<List<ItemEntity>>, t: Throwable) {
                 // TODO("Not yet implemented")
             }
-
         })
     }
 }
