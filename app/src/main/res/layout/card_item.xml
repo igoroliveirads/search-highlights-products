@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp">
 
     <ImageView
         android:id="@+id/image_thumb"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="16dp"
         android:background="@drawable/background_item"
         android:src="@drawable/ic_cart"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,10 +29,9 @@
 
     <TextView
         android:id="@+id/text_title_item"
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="22dp"
         android:text="Nome do item"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/image_thumb"
@@ -41,15 +39,41 @@
 
     <TextView
         android:id="@+id/text_price_item"
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="22dp"
         android:text="R$ 1000,00"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/image_thumb"
-        app:layout_constraintTop_toTopOf="@id/text_title_item" />
+        app:layout_constraintTop_toBottomOf="@+id/text_title_item" />
+
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="23dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image_thumb"
+        app:layout_constraintTop_toBottomOf="@+id/text_price_item">
+
+        <TextView
+            android:id="@+id/text_pre_amount"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:text="em"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/text_installment_amount"
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:text="6 x R$ 192,00 sem juros"
+            android:textColor="@color/green_meli"
+            android:textSize="14sp" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

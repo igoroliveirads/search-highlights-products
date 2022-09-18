@@ -13,7 +13,7 @@ class RetrofitClient {
 
         private fun getRetrofitInstance(): Retrofit {
             val http = OkHttpClient.Builder()
-            if (!::INSTANCE.isInitialized) { // É NECESSÁRIO???
+            if (!::INSTANCE.isInitialized) {
                 INSTANCE = Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(http.build())

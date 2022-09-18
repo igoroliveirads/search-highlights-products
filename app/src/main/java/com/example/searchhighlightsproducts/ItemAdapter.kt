@@ -1,5 +1,6 @@
 package com.example.searchhighlightsproducts
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.View
@@ -19,10 +20,13 @@ class ItemAdapter(
         return ItemViewHolder(itemView)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = itemList[position]
+        val amount = item.body.price.div(6)
         holder.titleItem.text = item.body.title
-        holder.priceItem.text = item.body.price.toString()
+        holder.priceItem.text = "R$ "+ item.body.price.toString()
+        holder.installmentAmount.text = "6 x R$ ${amount.toInt()} sem juros"
         Picasso.get().load(item.body.secure_thumbnail).into(holder.imageItem)
         holder.itemView.setOnClickListener {
             itemSelected(item)
@@ -35,6 +39,7 @@ class ItemAdapter(
         val titleItem: TextView = itemView.findViewById(R.id.text_title_item)
         val priceItem: TextView = itemView.findViewById(R.id.text_price_item)
         val imageItem: ImageView = itemView.findViewById(R.id.image_thumb)
+        val installmentAmount: TextView = itemView.findViewById(R.id.text_installment_amount)
     }
 }
 
