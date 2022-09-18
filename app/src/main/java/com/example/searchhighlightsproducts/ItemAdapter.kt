@@ -25,7 +25,7 @@ class ItemAdapter(
         val item = itemList[position]
         val amount = item.body.price.div(6)
         holder.titleItem.text = item.body.title
-        holder.priceItem.text = "R$ "+ item.body.price.toString()
+        holder.priceItem.text = "R$ ${item.body.price}"
         holder.installmentAmount.text = "6 x R$ ${amount.toInt()} sem juros"
         Picasso.get().load(item.body.secure_thumbnail).into(holder.imageItem)
         holder.itemView.setOnClickListener {

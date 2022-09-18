@@ -21,6 +21,7 @@ class ItemListActivity : AppCompatActivity() {
 
         binding = ActivityItemListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         binding.circularProgressIndicator.visibility = View.VISIBLE
         getCategory("carro")
     }
@@ -30,7 +31,9 @@ class ItemListActivity : AppCompatActivity() {
         binding.recyclerViewItem.setHasFixedSize(true)
         binding.recyclerViewItem.adapter = ItemAdapter(itemList) { item ->
             val intent = Intent(this, ItemDetailsActivity::class.java)
-            intent.putExtra(Constants.KEY.ITEM_KEY, item.body.title)
+            intent.putExtra(Constants.KEY.TITLE, item.body.title)
+            intent.putExtra(Constants.KEY.PRICE, item.body.price.toString())
+            intent.putExtra(Constants.KEY.IMAGE, item.body.secure_thumbnail)
             startActivity(intent)
         }
     }
