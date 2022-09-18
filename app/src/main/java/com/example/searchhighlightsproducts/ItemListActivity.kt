@@ -19,27 +19,20 @@ class ItemListActivity : AppCompatActivity() {
         binding = ActivityItemListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val teste = getCategory("carro") {
-            when (it) {
-                is Result.Error -> it.error
-                is Result.Success -> it.result
-            }
-        }
-        initRecyclerItems()
+        getCategory("carro")
     }
 
-    private fun initRecyclerItems() {
+    private fun initRecyclerItems(itemList: List<ItemEntity>) {
         binding.recyclerViewItem.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewItem.setHasFixedSize(true)
-        binding.recyclerViewItem.adapter = ItemAdapter(ItemList.getItemList()) { item ->
+        binding.recyclerViewItem.adapter = ItemAdapter(itemList) { item ->
             val intent = Intent(this, ItemDetailsActivity::class.java)
-            intent.putExtra(Constants.KEY.ITEM_KEY, item.name)
-            intent.putExtra(Constants.KEY.ITEM_KEY, item.price)
+            intent.putExtra(Constants.KEY.ITEM_KEY, item.body.title)
             startActivity(intent)
         }
     }
 
-    private fun getCategory(search: String, onResult: (Result<List<ItemEntity>>) -> Unit) {
+    private fun getCategory(search: String) {
         val service = RetrofitClient.createRetrofitService()
         val call: Call<List<CategoryPredictorEntity>> = service.categoriesList(search)
         call.enqueue(object : Callback<List<CategoryPredictorEntity>> {
@@ -50,19 +43,19 @@ class ItemListActivity : AppCompatActivity() {
                 val categories = response.body()
                 // TODO: "TRATAR EM CASO DE ERRO DE SERVIDOR"
                 if (categories != null) {
-                    getHighlights(categories[0].category_id, onResult)
+                    getHighlights(categories[0].category_id)
                 } else {
                     // TODO("Not yet implemented")
                 }
             }
 
             override fun onFailure(call: Call<List<CategoryPredictorEntity>>, t: Throwable) {
-                onResult(Result.Error(t))
+                // TODO("Not yet implemented")
             }
         })
     }
 
-    private fun getHighlights(categoryId: String, onResult: (Result<List<ItemEntity>>) -> Unit) {
+    private fun getHighlights(categoryId: String) {
         val service = RetrofitClient.createRetrofitService()
         val call: Call<HighlightsItemEntity> = service.highlightsItems(categoryId)
 
@@ -75,19 +68,19 @@ class ItemListActivity : AppCompatActivity() {
                 // TODO: "TRATAR EM CASO DE ERRO DE SERVIDOR"
                 if (highlights != null) {
                     val itemIds = highlights.content.filter { it.type == "ITEM" }.map { it.id }
-                    getItems(itemIds, onResult)
+                    getItems(itemIds)
                 } else {
                     // TODO("Not yet implemented")
                 }
             }
 
             override fun onFailure(call: Call<HighlightsItemEntity>, t: Throwable) {
-                onResult(Result.Error(t))
+                // TODO("Not yet implemented")
             }
         })
     }
 
-    private fun getItems(itemIds: List<String>, onResult: (Result<List<ItemEntity>>) -> Unit) {
+    private fun getItems(itemIds: List<String>) {
         val service = RetrofitClient.createRetrofitService()
         val itemIds = itemIds.joinToString(",")
         val call: Call<List<ItemEntity>> = service.itemsList(itemIds)
@@ -96,12 +89,12 @@ class ItemListActivity : AppCompatActivity() {
                 call: Call<List<ItemEntity>>,
                 response: Response<List<ItemEntity>>
             ) {
-                val items: List<ItemEntity> = response.body() ?: emptyList()
-                onResult(Result.Success(items))
+                val itemList: List<ItemEntity> = response.body() ?: emptyList()
+                initRecyclerItems(itemList)
             }
 
             override fun onFailure(call: Call<List<ItemEntity>>, t: Throwable) {
-                onResult(Result.Error(t))
+                // TODO("Not yet implemented")
             }
         })
     }

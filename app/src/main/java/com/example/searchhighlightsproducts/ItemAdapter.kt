@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
 class ItemAdapter(
-    private val itemList: MutableList<ItemModel>,
-    val itemSelected: (ItemModel) -> Unit
+    private val itemList: List<ItemEntity>,
+    val itemSelected: (ItemEntity) -> Unit
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -21,9 +21,9 @@ class ItemAdapter(
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = itemList[position]
-        holder.titleItem.text = item.name
-        holder.priceItem.text = item.price.toString()
-        Picasso.get().load(item.image).into(holder.imageItem)
+        holder.titleItem.text = item.body.title
+        holder.priceItem.text = item.body.price.toString()
+        Picasso.get().load(item.body.secure_thumbnail).into(holder.imageItem)
         holder.itemView.setOnClickListener {
             itemSelected(item)
         }

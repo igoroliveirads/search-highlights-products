@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 class ItemEntity {
 
     @SerializedName("body")
-    lateinit var item: ItemBody
+    lateinit var body: ItemBody
 
 }
 
