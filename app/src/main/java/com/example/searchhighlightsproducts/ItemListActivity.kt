@@ -3,6 +3,7 @@ package com.example.searchhighlightsproducts
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +21,7 @@ class ItemListActivity : AppCompatActivity() {
 
         binding = ActivityItemListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        binding.circularProgressIndicator.visibility = View.VISIBLE
         getCategory("carro")
     }
 
@@ -48,23 +49,18 @@ class ItemListActivity : AppCompatActivity() {
                         getHighlights(categories[0].category_id)
                         binding.circularProgressIndicator.visibility = View.GONE
                     } else {
-                        Toast.makeText(baseContext, "Produto não encontrado.", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(baseContext, "Produto não encontrado.", Toast.LENGTH_LONG).show()
                         binding.circularProgressIndicator.visibility = View.GONE
                     }
                 } else {
-                    Toast.makeText(
-                        baseContext,
-                        "500 - Erro interno no servidor.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(baseContext,"Erro interno no servidor. Tente novamente mais tarde.",Toast.LENGTH_LONG).show()
                     binding.circularProgressIndicator.visibility = View.GONE
                 }
             }
 
             override fun onFailure(call: Call<List<CategoryPredictorEntity>>, t: Throwable) {
-                Toast.makeText(baseContext, "Sem conexão com a internet.", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(baseContext, "Sem conexão com a internet.", Toast.LENGTH_LONG).show()
+                Log.e("ERROR", "getCategory(): $t")
                 binding.circularProgressIndicator.visibility = View.GONE
             }
         })
@@ -84,19 +80,14 @@ class ItemListActivity : AppCompatActivity() {
                     if (highlights != null) {
                         val itemIds = highlights.content.filter { it.type == "ITEM" }.map { it.id }
                         getItems(itemIds)
-                        binding.circularProgressIndicator.visibility = View.GONE
                     }
                 } else {
-                    Toast.makeText(baseContext, "Produto não encontrado.", Toast.LENGTH_SHORT)
-                        .show()
-                    binding.circularProgressIndicator.visibility = View.GONE
+                    Toast.makeText(baseContext, "Erro interno no servidor. Tente novamente mais tarde.", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<HighlightsItemEntity>, t: Throwable) {
-                Toast.makeText(baseContext, "Produto não encontrado.", Toast.LENGTH_SHORT)
-                    .show()
-                binding.circularProgressIndicator.visibility = View.GONE
+                Log.e("ERROR", "getHighlights(): $t")
             }
         })
     }
@@ -113,12 +104,13 @@ class ItemListActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val itemList: List<ItemEntity> = response.body() ?: emptyList()
                     initRecyclerItems(itemList)
+                } else {
+                    Toast.makeText(baseContext, "Erro interno no servidor. Tente novamente mais tarde.", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<List<ItemEntity>>, t: Throwable) {
-                Toast.makeText(baseContext, "Produto não encontrado.", Toast.LENGTH_SHORT)
-                    .show()
+                Log.e("ERROR", "getItems(): $t")
             }
         })
     }
