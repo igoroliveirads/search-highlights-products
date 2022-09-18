@@ -3,6 +3,8 @@ package com.example.searchhighlightsproducts
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.searchhighlightsproducts.databinding.ActivityItemListBinding
 import retrofit2.Call
@@ -40,17 +42,30 @@ class ItemListActivity : AppCompatActivity() {
                 call: Call<List<CategoryPredictorEntity>>,
                 response: Response<List<CategoryPredictorEntity>>
             ) {
-                val categories = response.body()
-                // TODO: "TRATAR EM CASO DE ERRO DE SERVIDOR"
-                if (categories != null) {
-                    getHighlights(categories[0].category_id)
+                if (response.isSuccessful) {
+                    val categories = response.body()
+                    if (categories != null) {
+                        getHighlights(categories[0].category_id)
+                        binding.circularProgressIndicator.visibility = View.GONE
+                    } else {
+                        Toast.makeText(baseContext, "Produto não encontrado.", Toast.LENGTH_SHORT)
+                            .show()
+                        binding.circularProgressIndicator.visibility = View.GONE
+                    }
                 } else {
-                    // TODO("Not yet implemented")
+                    Toast.makeText(
+                        baseContext,
+                        "500 - Erro interno no servidor.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.circularProgressIndicator.visibility = View.GONE
                 }
             }
 
             override fun onFailure(call: Call<List<CategoryPredictorEntity>>, t: Throwable) {
-                // TODO("Not yet implemented")
+                Toast.makeText(baseContext, "Sem conexão com a internet.", Toast.LENGTH_SHORT)
+                    .show()
+                binding.circularProgressIndicator.visibility = View.GONE
             }
         })
     }
@@ -64,37 +79,46 @@ class ItemListActivity : AppCompatActivity() {
                 call: Call<HighlightsItemEntity>,
                 response: Response<HighlightsItemEntity>
             ) {
-                val highlights = response.body()
-                // TODO: "TRATAR EM CASO DE ERRO DE SERVIDOR"
-                if (highlights != null) {
-                    val itemIds = highlights.content.filter { it.type == "ITEM" }.map { it.id }
-                    getItems(itemIds)
+                if (response.isSuccessful) {
+                    val highlights = response.body()
+                    if (highlights != null) {
+                        val itemIds = highlights.content.filter { it.type == "ITEM" }.map { it.id }
+                        getItems(itemIds)
+                        binding.circularProgressIndicator.visibility = View.GONE
+                    }
                 } else {
-                    // TODO("Not yet implemented")
+                    Toast.makeText(baseContext, "Produto não encontrado.", Toast.LENGTH_SHORT)
+                        .show()
+                    binding.circularProgressIndicator.visibility = View.GONE
                 }
             }
 
             override fun onFailure(call: Call<HighlightsItemEntity>, t: Throwable) {
-                // TODO("Not yet implemented")
+                Toast.makeText(baseContext, "Produto não encontrado.", Toast.LENGTH_SHORT)
+                    .show()
+                binding.circularProgressIndicator.visibility = View.GONE
             }
         })
     }
 
     private fun getItems(itemIds: List<String>) {
         val service = RetrofitClient.createRetrofitService()
-        val itemIds = itemIds.joinToString(",")
-        val call: Call<List<ItemEntity>> = service.itemsList(itemIds)
+        val items = itemIds.joinToString(",")
+        val call: Call<List<ItemEntity>> = service.itemsList(items)
         call.enqueue(object : Callback<List<ItemEntity>> {
             override fun onResponse(
                 call: Call<List<ItemEntity>>,
                 response: Response<List<ItemEntity>>
             ) {
-                val itemList: List<ItemEntity> = response.body() ?: emptyList()
-                initRecyclerItems(itemList)
+                if (response.isSuccessful) {
+                    val itemList: List<ItemEntity> = response.body() ?: emptyList()
+                    initRecyclerItems(itemList)
+                }
             }
 
             override fun onFailure(call: Call<List<ItemEntity>>, t: Throwable) {
-                // TODO("Not yet implemented")
+                Toast.makeText(baseContext, "Produto não encontrado.", Toast.LENGTH_SHORT)
+                    .show()
             }
         })
     }
