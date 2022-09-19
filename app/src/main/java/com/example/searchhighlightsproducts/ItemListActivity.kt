@@ -31,6 +31,7 @@ class ItemListActivity : AppCompatActivity() {
         binding.recyclerViewItem.setHasFixedSize(true)
         binding.recyclerViewItem.adapter = ItemAdapter(itemList) { item ->
             val intent = Intent(this, ItemDetailsActivity::class.java)
+            intent.putExtra(Constants.KEY.ID, item.body.id)
             intent.putExtra(Constants.KEY.TITLE, item.body.title)
             intent.putExtra(Constants.KEY.PRICE, item.body.price.toString())
             intent.putExtra(Constants.KEY.IMAGE, item.body.secure_thumbnail)

@@ -28,3 +28,9 @@ class ItemBody {
 
 }
 
+class ItemDescription {
+
+    @SerializedName("plain_text")
+    var plain_text: String = ""
+}
+
