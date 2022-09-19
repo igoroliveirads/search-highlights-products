@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.searchhighlightsproducts.R
 import com.example.searchhighlightsproducts.api.CategoryPredictorEntity
 import com.example.searchhighlightsproducts.api.HighlightsItemEntity
 import com.example.searchhighlightsproducts.api.ItemEntity
@@ -60,18 +61,18 @@ class ItemListActivity : AppCompatActivity() {
                         getHighlights(categories[0].category_id)
                         binding.circularProgressIndicator.visibility = View.GONE
                     } else {
-                        Toast.makeText(baseContext, "Produto não encontrado.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(baseContext, getString(R.string.product_not_found), Toast.LENGTH_LONG).show()
                         binding.circularProgressIndicator.visibility = View.GONE
                     }
                 } else {
-                    Toast.makeText(baseContext,"Erro interno no servidor. Tente novamente mais tarde.",Toast.LENGTH_LONG).show()
+                    Toast.makeText(baseContext, getString(R.string.internal_server_error),Toast.LENGTH_LONG).show()
                     binding.circularProgressIndicator.visibility = View.GONE
                 }
             }
 
             override fun onFailure(call: Call<List<CategoryPredictorEntity>>, t: Throwable) {
-                Toast.makeText(baseContext, "Sem conexão com a internet.", Toast.LENGTH_LONG).show()
-                Log.e("ERROR", "getCategory(): $t")
+                Toast.makeText(baseContext, getString(R.string.no_connection), Toast.LENGTH_LONG).show()
+                Log.e(Constants.KEY.ERROR, "getCategory(): $t")
                 binding.circularProgressIndicator.visibility = View.GONE
             }
         })
@@ -93,12 +94,12 @@ class ItemListActivity : AppCompatActivity() {
                         getItems(itemIds)
                     }
                 } else {
-                    Toast.makeText(baseContext, "Produto não encontrado.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(baseContext, getString(R.string.product_not_found), Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<HighlightsItemEntity>, t: Throwable) {
-                Log.e("ERROR", "getHighlights(): $t")
+                Log.e(Constants.KEY.ERROR, "getHighlights(): $t")
             }
         })
     }
@@ -116,12 +117,12 @@ class ItemListActivity : AppCompatActivity() {
                     val itemList: List<ItemEntity> = response.body() ?: emptyList()
                     initRecyclerItems(itemList)
                 } else {
-                    Toast.makeText(baseContext, "Erro interno no servidor. Tente novamente mais tarde.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(baseContext, getString(R.string.internal_server_error), Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<List<ItemEntity>>, t: Throwable) {
-                Log.e("ERROR", "getItems(): $t")
+                Log.e(Constants.KEY.ERROR, "getItems(): $t")
             }
         })
     }

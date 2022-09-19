@@ -38,7 +38,7 @@
                 android:iconifiedByDefault="false"
                 android:inputType="text"
                 app:drawableStartCompat="@drawable/ic_search"
-                app:queryHint="Buscar no Mercado Livre" />
+                app:queryHint="@string/search" />
 
 
             <ImageView

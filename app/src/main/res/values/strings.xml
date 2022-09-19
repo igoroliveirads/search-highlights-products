@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">SearchHighlightsProducts</string>
+    <string name="product_not_found">Produto não encontrado.</string>
+    <string name="internal_server_error">Erro interno no servidor. Tente novamente mais tarde.</string>
+    <string name="no_connection">Sem conexão com a internet.</string>
+    <string name="description_processing_error">Erro ao processar a descrição do produto.</string>
+    <string name="remove_favorites">Remover dos favoritos</string>
+    <string name="add_favorites">Adicionar aos favoritos</string>
+    <string name="search">Buscar no Mercado Livre</string>
+    <string name="item_title">Nome do item</string>
+    <string name="item_price">R$ 1000,00</string>
+    <string name="pre_amount">em</string>
+    <string name="installment_amount">6 x R$ 192,00 sem juros</string>
+    <string name="ask">Perguntar</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="share">Compartilhar</string>
+    <string name="title_description">Descrição</string>
+    <string name="description">Descrição indisponível no momento. Volte mais tarde.</string>
 </resources>

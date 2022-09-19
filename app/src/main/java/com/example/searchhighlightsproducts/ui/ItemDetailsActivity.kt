@@ -66,20 +66,20 @@ class ItemDetailsActivity : AppCompatActivity() {
                     if (description != null){
                         binding.textDescription.text = description.plain_text
                     } else {
-                        Toast.makeText(baseContext, "Erro ao processar a descrição do produto1.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(baseContext, getString(R.string.description_processing_error), Toast.LENGTH_LONG).show()
                     }
                 }
             }
 
             override fun onFailure(call: Call<ItemDescription>, t: Throwable) {
-                Log.e("ERROR", "getDescription(): $t")
+                Log.e(Constants.KEY.ERROR, "getDescription(): $t")
             }
 
         })
     }
 
     private fun addFavoriteItem(itemId: String) {
-        binding.textFavorite.text = "Remover dos favoritos"
+        binding.textFavorite.text = getString(R.string.remove_favorites)
         binding.textFavorite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite, 0, 0, 0)
         binding.textFavorite.setOnClickListener{
             FavoritePreferences(this).addFavorite(itemId)
@@ -88,7 +88,7 @@ class ItemDetailsActivity : AppCompatActivity() {
     }
 
     private fun removeFavoriteItem(itemId: String) {
-        binding.textFavorite.text = "Adicionar aos favoritos"
+        binding.textFavorite.text = getString(R.string.add_favorites)
         binding.textFavorite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_off, 0, 0, 0)
         binding.textFavorite.setOnClickListener {
             FavoritePreferences(this).removeFavorite(itemId)

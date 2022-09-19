@@ -7,6 +7,7 @@ class Constants private constructor() {
         const val TITLE = "TITLE"
         const val PRICE = "PRICE"
         const val IMAGE = "IMAGE"
+        const val ERROR = "ERROR"
     }
 
     object PREFERENCES {
