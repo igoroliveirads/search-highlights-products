@@ -25,7 +25,15 @@ class ItemDetailsActivity : AppCompatActivity() {
             finish()
         }
 
+        val itemId = intent.getStringExtra(Constants.KEY.ID)
+        if(FavoritePreferences(this).contains(itemId ?: "")){
+            addFavoriteItem(itemId ?: "")
+        } else{
+            removeFavoriteItem(itemId ?: "")
+        }
+
         getInfo()
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -64,5 +72,23 @@ class ItemDetailsActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    private fun addFavoriteItem(itemId: String) {
+        binding.textFavorite.text = "Remover dos favoritos"
+        binding.textFavorite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite, 0, 0, 0)
+        binding.textFavorite.setOnClickListener{
+            FavoritePreferences(this).addFavorite(itemId)
+            removeFavoriteItem(itemId)
+        }
+    }
+
+    private fun removeFavoriteItem(itemId: String) {
+        binding.textFavorite.text = "Adicionar aos favoritos"
+        binding.textFavorite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_off, 0, 0, 0)
+        binding.textFavorite.setOnClickListener {
+            FavoritePreferences(this).removeFavorite(itemId)
+            addFavoriteItem(itemId)
+        }
     }
 }
