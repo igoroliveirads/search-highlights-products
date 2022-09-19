@@ -3,6 +3,7 @@ package com.example.searchhighlightsproducts
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.widget.SearchView
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -22,21 +23,22 @@ class ItemListActivity : AppCompatActivity() {
         binding = ActivityItemListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.circularProgressIndicator.visibility = View.VISIBLE
-        getCategory("carro")
+        search()
     }
 
-    private fun initRecyclerItems(itemList: List<ItemEntity>) {
-        binding.recyclerViewItem.layoutManager = LinearLayoutManager(this)
-        binding.recyclerViewItem.setHasFixedSize(true)
-        binding.recyclerViewItem.adapter = ItemAdapter(itemList) { item ->
-            val intent = Intent(this, ItemDetailsActivity::class.java)
-            intent.putExtra(Constants.KEY.ID, item.body.id)
-            intent.putExtra(Constants.KEY.TITLE, item.body.title)
-            intent.putExtra(Constants.KEY.PRICE, item.body.price.toString())
-            intent.putExtra(Constants.KEY.IMAGE, item.body.secure_thumbnail)
-            startActivity(intent)
-        }
+    private fun search(){
+        binding.editSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                binding.editSearch.clearFocus()
+                binding.circularProgressIndicator.visibility = View.VISIBLE
+                getCategory(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return true
+            }
+        })
     }
 
     private fun getCategory(search: String) {
@@ -86,7 +88,7 @@ class ItemListActivity : AppCompatActivity() {
                         getItems(itemIds)
                     }
                 } else {
-                    Toast.makeText(baseContext, "Erro interno no servidor. Tente novamente mais tarde.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(baseContext, "Produto não encontrado.", Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -117,5 +119,18 @@ class ItemListActivity : AppCompatActivity() {
                 Log.e("ERROR", "getItems(): $t")
             }
         })
+    }
+
+    private fun initRecyclerItems(itemList: List<ItemEntity>) {
+        binding.recyclerViewItem.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewItem.setHasFixedSize(true)
+        binding.recyclerViewItem.adapter = ItemAdapter(itemList) { item ->
+            val intent = Intent(this, ItemDetailsActivity::class.java)
+            intent.putExtra(Constants.KEY.ID, item.body.id)
+            intent.putExtra(Constants.KEY.TITLE, item.body.title)
+            intent.putExtra(Constants.KEY.PRICE, item.body.price.toString())
+            intent.putExtra(Constants.KEY.IMAGE, item.body.secure_thumbnail)
+            startActivity(intent)
+        }
     }
 }
