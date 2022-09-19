@@ -1,4 +1,4 @@
-package com.example.searchhighlightsproducts
+package com.example.searchhighlightsproducts.infra
 
 class Constants private constructor() {
 

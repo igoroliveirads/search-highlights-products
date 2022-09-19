@@ -1,11 +1,16 @@
-package com.example.searchhighlightsproducts
+package com.example.searchhighlightsproducts.ui
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.example.searchhighlightsproducts.R
+import com.example.searchhighlightsproducts.api.ItemDescription
+import com.example.searchhighlightsproducts.api.RetrofitClient
 import com.example.searchhighlightsproducts.databinding.ActivityItemDetailsBinding
+import com.example.searchhighlightsproducts.infra.Constants
+import com.example.searchhighlightsproducts.infra.FavoritePreferences
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,7 +38,6 @@ class ItemDetailsActivity : AppCompatActivity() {
         }
 
         getInfo()
-
     }
 
     @SuppressLint("SetTextI18n")

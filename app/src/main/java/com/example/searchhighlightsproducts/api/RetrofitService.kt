@@ -1,4 +1,4 @@
-package com.example.searchhighlightsproducts
+package com.example.searchhighlightsproducts.api
 
 import retrofit2.Call
 import retrofit2.http.GET
@@ -7,7 +7,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 /* ACCESS_TOKEN possui validade de 6 horas */
-const val ACCESS_TOKEN: String = "APP_USR-6008466615448127-091815-2c664ee91eacf0f3e9421f7f1f1c1183-292249204"
+const val ACCESS_TOKEN: String = "APP_USR-6008466615448127-091908-62fe4c7e8f5d4cc9694f82aca8d9eb9a-292249204"
 
 interface RetrofitService {
 

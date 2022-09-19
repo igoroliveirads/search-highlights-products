@@ -1,4 +1,4 @@
-package com.example.searchhighlightsproducts
+package com.example.searchhighlightsproducts.infra
 
 import android.content.Context
 import android.content.SharedPreferences

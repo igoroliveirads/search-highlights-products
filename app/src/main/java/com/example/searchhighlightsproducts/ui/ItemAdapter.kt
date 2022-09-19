@@ -1,4 +1,4 @@
-package com.example.searchhighlightsproducts
+package com.example.searchhighlightsproducts.ui
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.searchhighlightsproducts.R
+import com.example.searchhighlightsproducts.api.ItemEntity
 import com.squareup.picasso.Picasso
 
 class ItemAdapter(

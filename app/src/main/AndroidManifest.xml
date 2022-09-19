@@ -16,10 +16,10 @@
         android:theme="@style/Theme.SearchHighlightsProducts"
         tools:targetApi="31" >
         <activity
-            android:name=".ItemDetailsActivity"
+            android:name=".ui.ItemDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ItemListActivity"
+            android:name=".ui.ItemListActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

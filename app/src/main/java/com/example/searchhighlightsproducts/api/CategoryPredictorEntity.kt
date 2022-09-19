@@ -1,4 +1,4 @@
-package com.example.searchhighlightsproducts
+package com.example.searchhighlightsproducts.api
 
 import com.google.gson.annotations.SerializedName
 

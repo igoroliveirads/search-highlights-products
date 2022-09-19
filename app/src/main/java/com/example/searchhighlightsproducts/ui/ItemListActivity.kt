@@ -1,4 +1,4 @@
-package com.example.searchhighlightsproducts
+package com.example.searchhighlightsproducts.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +8,12 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.searchhighlightsproducts.api.CategoryPredictorEntity
+import com.example.searchhighlightsproducts.api.HighlightsItemEntity
+import com.example.searchhighlightsproducts.api.ItemEntity
+import com.example.searchhighlightsproducts.api.RetrofitClient
 import com.example.searchhighlightsproducts.databinding.ActivityItemListBinding
+import com.example.searchhighlightsproducts.infra.Constants
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
